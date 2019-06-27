@@ -1,5 +1,6 @@
 package edu.iis.mto.testreactor.exc4;
 
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
 
 import org.junit.Assert;
@@ -88,6 +89,17 @@ public class DishWasherTest {
         RunResult actualRunResult = dishWasher.start(programConfiguration);
 
         Assert.assertEquals(Status.SUCCESS,actualRunResult.getStatus());
+    }
+
+    @Test public void shouldReturnStatusErrorPumpOnThrowPumpException() throws PumpException {
+        DishWasher dishWasher = new DishWasher(waterPump,engine,dirtFilter,door);
+        WashingProgram program = WashingProgram.RINSE;
+        Mockito.when(door.closed()).thenReturn(false);
+        Mockito.when(dirtFilter.capacity()).thenReturn(70.0d);
+        ProgramConfiguration programConfiguration = ProgramConfiguration.builder().withProgram(program).withTabletsUsed(false).build();
+        Mockito.doThrow(PumpException.class).when(waterPump).drain();
+
+        Assert.assertThat(dishWasher.start(programConfiguration).getStatus(), is(Status.ERROR_PUMP));
     }
 
     @Test public void test() throws Exception{
