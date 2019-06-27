@@ -69,6 +69,18 @@ public class DishWasherTest {
         Assert.assertEquals(Status.ERROR_FILTER,actualRunResult.getStatus());
     }
 
+    @Test public void whenUsedTabletsWithEnoughFilterCapacityDishWasherShouldReturnSuccessStatus(){
+        DishWasher dishWasher = new DishWasher(waterPump,engine,dirtFilter,door);
+
+        WashingProgram program = WashingProgram.RINSE;
+        Mockito.when(dirtFilter.capacity()).thenReturn(65.0d);
+
+        ProgramConfiguration programConfiguration = ProgramConfiguration.builder().withProgram(program).withTabletsUsed(true).build();
+
+        RunResult actualRunResult = dishWasher.start(programConfiguration);
+        Assert.assertEquals(Status.SUCCESS,actualRunResult.getStatus());
+    }
+
     @Test public void test() {
         fail("Not yet implemented");
     }
