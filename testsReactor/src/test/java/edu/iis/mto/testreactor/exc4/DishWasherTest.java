@@ -58,12 +58,18 @@ public class DishWasherTest {
         Assert.assertEquals(120,actualRunResult.getRunMinutes());
     }
 
+    @Test public void whenUsedTabletsDishWasherShouldReturnErrorFilter() {
+        DishWasher dishWasher = new DishWasher(waterPump,engine,dirtFilter,door);
 
+        WashingProgram program = WashingProgram.INTENSIVE;
 
+        ProgramConfiguration programConfiguration = ProgramConfiguration.builder().withProgram(program).withTabletsUsed(true).build();
 
+        RunResult actualRunResult = dishWasher.start(programConfiguration);
+        Assert.assertEquals(Status.ERROR_FILTER,actualRunResult.getStatus());
+    }
 
-    @Test
-    public void test() {
+    @Test public void test() {
         fail("Not yet implemented");
     }
 
