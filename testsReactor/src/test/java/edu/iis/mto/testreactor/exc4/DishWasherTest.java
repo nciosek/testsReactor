@@ -6,7 +6,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -93,7 +92,19 @@ public class DishWasherTest {
         Mockito.verify(door,Mockito.times(1)).closed();
     }
 
-    @Test public void test() {
+    @Test (expected = NullPointerException.class)
+    public void whenGivenProgramIsNullWeShouldGetNullPointerException(){
+        DishWasher dishWasher = new DishWasher(waterPump,engine,dirtFilter,door);
+        WashingProgram program = null;
+
+        ProgramConfiguration programConfiguration = ProgramConfiguration.builder().withProgram(program).withTabletsUsed(false).build();
+
+        RunResult actualRunResult = dishWasher.start(programConfiguration);
+        Assert.assertEquals(Status.SUCCESS,actualRunResult.getStatus());
+    }
+
+    @Test public void test() throws Exception{
+        Mockito.doThrow(PumpException.class).when(waterPump).drain();
         fail("Not yet implemented");
     }
 
