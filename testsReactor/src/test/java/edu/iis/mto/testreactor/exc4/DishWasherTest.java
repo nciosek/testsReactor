@@ -26,12 +26,10 @@ public class DishWasherTest {
 
     @Test public void properlyUsedDishWasherRunShouldEndWithSuccessStatus(){
         DishWasher dishWasher = new DishWasher(waterPump,engine,dirtFilter,door);
-
         WashingProgram program = WashingProgram.ECO;
-
         ProgramConfiguration programConfiguration = ProgramConfiguration.builder().withProgram(program).withTabletsUsed(false).build();
-
         RunResult actualRunResult = dishWasher.start(programConfiguration);
+
         Assert.assertEquals(Status.SUCCESS,actualRunResult.getStatus());
     }
 
@@ -39,54 +37,44 @@ public class DishWasherTest {
         DishWasher dishWasher = new DishWasher(waterPump,engine,dirtFilter,door);
         Mockito.when(door.closed()).thenReturn(true);
         WashingProgram program = WashingProgram.ECO;
-
         ProgramConfiguration programConfiguration = ProgramConfiguration.builder().withProgram(program).withTabletsUsed(false).build();
-
         RunResult actualRunResult = dishWasher.start(programConfiguration);
+
         Assert.assertEquals(Status.DOOR_OPEN,actualRunResult.getStatus());
     }
 
     @Test public void dishWasherWithIntensiveWashingProgramShouldRunFor140Minutes(){
         DishWasher dishWasher = new DishWasher(waterPump,engine,dirtFilter,door);
-
         WashingProgram program = WashingProgram.INTENSIVE;
-
         ProgramConfiguration programConfiguration = ProgramConfiguration.builder().withProgram(program).withTabletsUsed(false).build();
-
         RunResult actualRunResult = dishWasher.start(programConfiguration);
+
         Assert.assertEquals(120,actualRunResult.getRunMinutes());
     }
 
     @Test public void whenUsedTabletsDishWasherShouldReturnErrorFilter() {
         DishWasher dishWasher = new DishWasher(waterPump,engine,dirtFilter,door);
-
         WashingProgram program = WashingProgram.INTENSIVE;
-
         ProgramConfiguration programConfiguration = ProgramConfiguration.builder().withProgram(program).withTabletsUsed(true).build();
-
         RunResult actualRunResult = dishWasher.start(programConfiguration);
+
         Assert.assertEquals(Status.ERROR_FILTER,actualRunResult.getStatus());
     }
 
     @Test public void whenUsedTabletsWithEnoughFilterCapacityDishWasherShouldReturnSuccessStatus(){
         DishWasher dishWasher = new DishWasher(waterPump,engine,dirtFilter,door);
-
         WashingProgram program = WashingProgram.RINSE;
         Mockito.when(dirtFilter.capacity()).thenReturn(65.0d);
-
         ProgramConfiguration programConfiguration = ProgramConfiguration.builder().withProgram(program).withTabletsUsed(true).build();
-
         RunResult actualRunResult = dishWasher.start(programConfiguration);
+
         Assert.assertEquals(Status.SUCCESS,actualRunResult.getStatus());
     }
 
     @Test public void doorClosedMethodShouldBeCalledOnce(){
         DishWasher dishWasher = new DishWasher(waterPump,engine,dirtFilter,door);
-
         WashingProgram program = WashingProgram.ECO;
-
         ProgramConfiguration programConfiguration = ProgramConfiguration.builder().withProgram(program).withTabletsUsed(false).build();
-
         RunResult actualRunResult = dishWasher.start(programConfiguration);
 
         Mockito.verify(door,Mockito.times(1)).closed();
@@ -96,10 +84,9 @@ public class DishWasherTest {
     public void whenGivenProgramIsNullWeShouldGetNullPointerException(){
         DishWasher dishWasher = new DishWasher(waterPump,engine,dirtFilter,door);
         WashingProgram program = null;
-
         ProgramConfiguration programConfiguration = ProgramConfiguration.builder().withProgram(program).withTabletsUsed(false).build();
-
         RunResult actualRunResult = dishWasher.start(programConfiguration);
+
         Assert.assertEquals(Status.SUCCESS,actualRunResult.getStatus());
     }
 
