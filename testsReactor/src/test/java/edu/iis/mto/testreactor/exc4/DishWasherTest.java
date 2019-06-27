@@ -47,6 +47,19 @@ public class DishWasherTest {
         Assert.assertEquals(Status.DOOR_OPEN,actualRunResult.getStatus());
     }
 
+    @Test public void dishWasherWithIntensiveWashingProgramShouldRunFor140Minutes(){
+        DishWasher dishWasher = new DishWasher(waterPump,engine,dirtFilter,door);
+
+        WashingProgram program = WashingProgram.INTENSIVE;
+
+        ProgramConfiguration programConfiguration = ProgramConfiguration.builder().withProgram(program).withTabletsUsed(false).build();
+
+        RunResult actualRunResult = dishWasher.start(programConfiguration);
+        Assert.assertEquals(120,actualRunResult.getRunMinutes());
+    }
+
+
+
 
 
     @Test
