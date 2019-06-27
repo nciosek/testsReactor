@@ -36,6 +36,19 @@ public class DishWasherTest {
         Assert.assertEquals(Status.SUCCESS,actualRunResult.getStatus());
     }
 
+    @Test public void withOpenDoorsDishWasherShouldReturnDoorOpenStatus(){
+        DishWasher dishWasher = new DishWasher(waterPump,engine,dirtFilter,door);
+        Mockito.when(door.closed()).thenReturn(true);
+        WashingProgram program = WashingProgram.ECO;
+
+        ProgramConfiguration programConfiguration = ProgramConfiguration.builder().withProgram(program).withTabletsUsed(false).build();
+
+        RunResult actualRunResult = dishWasher.start(programConfiguration);
+        Assert.assertEquals(Status.DOOR_OPEN,actualRunResult.getStatus());
+    }
+
+
+
     @Test
     public void test() {
         fail("Not yet implemented");
