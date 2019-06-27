@@ -81,6 +81,18 @@ public class DishWasherTest {
         Assert.assertEquals(Status.SUCCESS,actualRunResult.getStatus());
     }
 
+    @Test public void doorClosedMethodShouldBeCalledOnce(){
+        DishWasher dishWasher = new DishWasher(waterPump,engine,dirtFilter,door);
+
+        WashingProgram program = WashingProgram.ECO;
+
+        ProgramConfiguration programConfiguration = ProgramConfiguration.builder().withProgram(program).withTabletsUsed(false).build();
+
+        RunResult actualRunResult = dishWasher.start(programConfiguration);
+
+        Mockito.verify(door,Mockito.times(1)).closed();
+    }
+
     @Test public void test() {
         fail("Not yet implemented");
     }
